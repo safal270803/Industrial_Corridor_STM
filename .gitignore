@@ -1,0 +1,17 @@
+# Python/Jupyter stuff
+__pycache__/
+.ipynb_checkpoints/
+.env
+.venv
+env/
+
+# GIS Data 
+*.zip
+*.shp
+*.dbf
+*.shx
+*.prj
+*.tif
+*.tiff
+data/
+outputs/
