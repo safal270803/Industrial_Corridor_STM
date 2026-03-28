@@ -13,5 +13,5 @@ env/
 *.prj
 *.tif
 *.tiff
-data/
-outputs/
+# data/
+# outputs/
