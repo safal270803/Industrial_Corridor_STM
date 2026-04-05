@@ -1,16 +1,17 @@
-# RQ1 — Built-up Growth & Infrastructure Accessibility: Dholera SIR (2016–2025)
+# Industrial_Corridor_STM
+## RQ1 — Built-up Growth & Infrastructure Accessibility: Dholera SIR (2016–2025)
 
 **Research Question:** Has infrastructure development in Dholera SIR driven measurable built-up growth, and does proximity to roads and key infrastructure nodes explain the spatial pattern of urbanization?
 
 ---
 
-## What This Notebook Does
+### What This Notebook Does
 
 This notebook uses **Google Earth Engine (GEE)** + **Sentinel-2** satellite imagery to detect, quantify, and spatially analyze built-up land cover change across Dholera Taluka between 2016 and 2025.
 
 ---
 
-## Setup
+### Setup
 
 ```bash
 pip install geemap earthengine-api geopandas matplotlib seaborn scikit-learn
@@ -23,7 +24,7 @@ geemap.ee_initialize()   # Requires GEE authentication
 
 ---
 
-## Data Requirements
+### Data Requirements
 
 | File | Location |
 |---|---|
@@ -36,9 +37,9 @@ geemap.ee_initialize()   # Requires GEE authentication
 
 ---
 
-## Analytical Pipeline
+### Analytical Pipeline
 
-### Stage 1 — Sentinel-2 True Color (Study Area)
+#### Stage 1 — Sentinel-2 True Color (Study Area)
 
 Oct–Dec composites were used for both years — lower SWIR soil reflectance in this season reduces false positives compared to summer or monsoon imagery.
 
@@ -52,7 +53,7 @@ Oct–Dec composites were used for both years — lower SWIR soil reflectance in
 
 ---
 
-### Stage 2 — Spectral Indices
+#### Stage 2 - Spectral Indices
 
 Three indices are computed per image to isolate built-up land from confounders.
 
@@ -76,7 +77,7 @@ Three indices are computed per image to isolate built-up land from confounders.
 
 ---
 
-### Stage 3 — Built-up Masks
+#### Stage 3 — Built-up Masks
 
 Multi-index thresholds applied to isolate built-up pixels (white = built-up, black = everything else).
 
@@ -98,7 +99,7 @@ Multi-index thresholds applied to isolate built-up pixels (white = built-up, bla
 
 ---
 
-### Stage 4 — Built-up Growth Heatmap (2016 → 2025)
+#### Stage 4 — Built-up Growth Heatmap (2016 → 2025)
 
 Pixel-wise comparison of both masks generates a 4-class change map.
 
@@ -126,7 +127,7 @@ Pixel-wise comparison of both masks generates a 4-class change map.
 
 ---
 
-### Stage 5 — Road Proximity Analysis
+#### Stage 5 — Road Proximity Analysis
 
 2,000 random sample points generated inside the ROI. Each point is attributed with:
 - `dist_m` — distance to major road network
@@ -147,7 +148,7 @@ A **7.5 km buffer** is applied — this threshold captures the airport, the key 
 
 ---
 
-### Stage 6 — Master Accessibility Surface
+#### Stage 6 — Master Accessibility Surface
 
 A weighted fused raster combining road and infrastructure accessibility:
 
@@ -165,7 +166,7 @@ A weighted fused raster combining road and infrastructure accessibility:
 
 ---
 
-## Key Outputs
+### Key Outputs
 
 | Output | Description |
 |---|---|
