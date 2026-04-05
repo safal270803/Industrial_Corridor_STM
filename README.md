@@ -49,7 +49,7 @@ Oct–Dec composites were used for both years — lower SWIR soil reflectance in
 
 **2016 Baseline (Oct–Dec 2016)**
 <!-- Screenshot: S2 True Color 2016 — geemap layer "S2 True Color (2016)" centered on Dholera ROI -->
-![S2 True Color 2016](output/s2_truecolor_2016.png)
+![S2 True Color 2016](output/screenshot/s2_truecolor_2016.png)
 
 ---
 
@@ -63,17 +63,17 @@ Three indices are computed per image to isolate built-up land from confounders.
 | MNDWI | `(Green - SWIR1) / (Green + SWIR1)` | Exclude water / salt pans |
 | SAVI | `((NIR - Red) × 1.5) / (NIR + Red + 0.5)` | Exclude vegetation |
 
-**NDBI Map (2025)** — Red/orange areas indicate residential or commercial zones
+**NDBI Map (2025)** — Red/orange areas indicate residential or commercial zones or salty soil noise.
 <!-- Screenshot: Map_NDBI layer with colorbar, centered on ROI -->
-![NDBI 2025](output/ndbi_2025.png)
+![NDBI 2025](output/screenshot/ndbi_2025.png)
 
 **MNDWI Map (2025)** — Deep blue pixels = lakes, rivers, or reservoirs
 <!-- Screenshot: Map_MNDWI layer with colorbar, centered on ROI -->
-![MNDWI 2025](output/mndwi_2025.png)
+![MNDWI 2025](output/screenshot/mndwi_2025.png)
 
 **SAVI Map (2025)** — Vibrant green = healthy biomass / vegetation
 <!-- Screenshot: Map_SAVI layer with colorbar, centered on ROI -->
-![SAVI 2025](output/savi_2025.png)
+![SAVI 2025](output/screenshot/savi_2025.png)
 
 ---
 
@@ -91,11 +91,11 @@ Multi-index thresholds applied to isolate built-up pixels (white = built-up, bla
 
 **Built-up Mask — 2025**
 <!-- Screenshot: "Clean Built-up Layer" (2025) on top of S2 True Color, geemap -->
-![Built-up Mask 2025](output/builtup_mask_2025.png)
+![Built-up Mask 2025](output/screenshot/builtup_mask_2025.png)
 
 **Built-up Mask — 2016**
 <!-- Screenshot: "Clean Built-up Layer" (2016) on top of S2 True Color, geemap -->
-![Built-up Mask 2016](output/builtup_mask_2016.png)
+![Built-up Mask 2016](output/screenshot/builtup_mask_2016.png)
 
 ---
 
@@ -111,7 +111,7 @@ Pixel-wise comparison of both masks generates a 4-class change map.
 | 🔵 Blue | 3 | Lost — was built-up in 2016, not in 2025 (QA) |
 
 <!-- Screenshot: "Built-up Growth Heatmap (2016–2025)" layer with legend, geemap -->
-![Growth Heatmap](output/growth_heatmap_2016_2025.png)
+![Growth Heatmap](output/screenshot/growth_heatmap_2016_2025.png)
 
 **Area Change Summary (fill in after running the notebook):**
 
@@ -137,14 +137,14 @@ A **7.5 km buffer** is applied — this threshold captures the airport, the key 
 
 **Sample Points on Built-up Layer**
 <!-- Screenshot: geemap map showing cyan "Top Urban Hotspots" dots overlaid on the white built-up mask -->
-![Sample Points](output/sample_points_builtup.png)
+![Sample Points](output/screenshot/sample_points_builtup.png)
 
 **Regression Plot — Distance vs. Built-up Density**
 
 2nd-order polynomial fit (order=2) models the decay of built-up density with road distance. Order-3 is also noted to capture the secondary density spike near the airport (which currently lacks direct road connectivity as of March 2026).
 
 <!-- Screenshot: Seaborn regplot output — "Dholera SIR: Urban Activation Signal" -->
-![Regression Plot](output/regression_distance_vs_density.png)
+![Regression Plot](output/screenshot/regression_distance_vs_density.png)
 
 ---
 
@@ -158,11 +158,11 @@ A weighted fused raster combining road and infrastructure accessibility:
 
 **Road Network (color-coded by hierarchy)**
 <!-- Screenshot: geemap map with color-coded road vectors overlaid — Red=Motorway, Orange=Trunk, Yellow=Primary, Green=Secondary, Magenta=Tertiary -->
-![Road Network](output/road_network_hierarchy.png)
+![Road Network](output/screenshot/road_network_hierarchy.png)
 
 **Master Accessibility Surface**
 <!-- Screenshot: "Master Accessibility Surface" heatmap layer with colorbar (dark=low, bright yellow=high), geemap -->
-![Master Accessibility Surface](output/master_accessibility_surface.png)
+![Master Accessibility Surface](output/screenshot/master_accessibility_surface.png)
 
 ---
 
