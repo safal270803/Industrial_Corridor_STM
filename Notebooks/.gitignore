@@ -13,5 +13,6 @@ env/
 *.prj
 *.tif
 *.tiff
+raw/ 
 # data/
 # outputs/
