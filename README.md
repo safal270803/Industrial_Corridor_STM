@@ -45,7 +45,7 @@ Oct–Dec composites were used for both years — lower SWIR soil reflectance in
 
 **2025 Baseline (Oct–Dec 2025)**
 <!-- Screenshot: S2 True Color 2025 — geemap layer "S2 True Color (2025)" centered on Dholera ROI -->
-![S2 True Color 2025](output/s2_truecolor_2025.png)
+![S2 True Color 2025](output/screenshot/s2_truecolor_2025.png)
 
 **2016 Baseline (Oct–Dec 2016)**
 <!-- Screenshot: S2 True Color 2016 — geemap layer "S2 True Color (2016)" centered on Dholera ROI -->
