@@ -34,6 +34,7 @@ geemap.ee_initialize()   # Requires GEE authentication
 | Pre-sampled points (fast path) | `data/processed/dholera_points_2025.csv` |
 
 > Roads were extracted from OSM via QGIS using highway filter: `motorway|trunk|primary|secondary|tertiary`
+
 > Dholera Active Infra shapes are manually carved out in QGIS by georeferencing the activation area of Dholera.
 
 ---
