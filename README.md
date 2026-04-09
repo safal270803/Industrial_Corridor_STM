@@ -108,24 +108,24 @@ Pixel-wise comparison of both masks generates a 4-class change map.
 | Color | Class | Meaning |
 |---|---|---|
 | ⬛ Dark | 0 | No built-up in either year |
-| ⬜ Gray | 1 | Stable — built-up in both 2016 & 2025 |
+| ⬜ Gray | 1 | Stable - built-up in both 2016 & 2025 |
 | 🔴 Orange-Red | 2 | New growth — urbanized between 2016 and 2025 |
-| 🔵 Blue | 3 | Lost — was built-up in 2016, not in 2025 (QA) |
+| 🔵 Blue | 3 | Lost - was built-up in 2016, not in 2025 (QA) |
 
 <!-- Screenshot: "Built-up Growth Heatmap (2016–2025)" layer with legend, geemap -->
 ![Growth Heatmap](output/screenshot/growth_heatmap_2016_2025.png)
 
-**Area Change Summary (fill in after running the notebook):**
+**Area Change Summary (filled after running the notebook):**
 
 | Metric | Value (km²) |
 |---|---|
-| Total Built-up 2016 | ___ |
-| Total Built-up 2025 | ___ |
-| Stable Built-up | ___ |
-| New Growth | ___ |
-| Lost Built-up | ___ |
-| **Net Change** | ___ |
-| **% Change** | ___ % |
+| Total Built-up 2016 | _10.537 km²_ |
+| Total Built-up 2025 | _35.509 km²_ |
+| Stable Built-up | _1.495 km²_ |
+| New Growth | _34.013 km²_ |
+| Lost Built-up | _9.041 km²_ |
+| **Net Change** | _24.972 km²_ |
+| **% Change** | _236.99 %_ % |
 
 ---
 
