@@ -1,5 +1,5 @@
 # Industrial_Corridor_STM
-## RQ1 — Built-up Growth & Infrastructure Accessibility: Dholera SIR (2016–2025)
+## RQ1 - Built-up Growth & Infrastructure Accessibility: Dholera SIR (2016–2025)
 
 **Research Question:** Has infrastructure development in Dholera SIR driven measurable built-up growth, and does proximity to roads and key infrastructure nodes explain the spatial pattern of urbanization?
 
@@ -29,8 +29,8 @@ geemap.ee_initialize()   # Requires GEE authentication
 | File | Location |
 |---|---|
 | Dholera Taluka boundary | `data/processed/Dholera_Taluk.geojson` |
-| Major roads (OSM-extracted) | `data/Processed/important_roads.geojson` |
-| Active infrastructure nodes | `data/Processed/dholera_active_infra.geojson` |
+| Major roads (OSM-extracted) | `data/processed/important_roads.geojson` |
+| Active infrastructure nodes | `data/processed/dholera_active_infra.geojson` |
 | Pre-sampled points (fast path) | `data/processed/dholera_points_2025.csv` |
 
 > Roads were extracted from OSM via QGIS using highway filter: `motorway|trunk|primary|secondary|tertiary`
