@@ -41,7 +41,7 @@ geemap.ee_initialize()   # Requires GEE authentication
 
 ### Analytical Pipeline
 
-#### Stage 1 — Sentinel-2 True Color (Study Area)
+#### Stage 1 - Sentinel-2 True Color (Study Area)
 
 Oct–Dec composites were used for both years — lower SWIR soil reflectance in this season reduces false positives compared to summer or monsoon imagery.
 
@@ -79,7 +79,7 @@ Three indices are computed per image to isolate built-up land from confounders.
 
 ---
 
-#### Stage 3 — Built-up Masks
+#### Stage 3 - Built-up Masks
 
 Multi-index thresholds applied to isolate built-up pixels (white = built-up, black = everything else).
 
@@ -101,7 +101,7 @@ Multi-index thresholds applied to isolate built-up pixels (white = built-up, bla
 
 ---
 
-#### Stage 4 — Built-up Growth Heatmap (2016 → 2025)
+#### Stage 4 - Built-up Growth Heatmap (2016 → 2025)
 
 Pixel-wise comparison of both masks generates a 4-class change map.
 
@@ -125,42 +125,43 @@ Pixel-wise comparison of both masks generates a 4-class change map.
 | New Growth | _34.013 km²_ |
 | Lost Built-up | _9.041 km²_ |
 | **Net Change** | _24.972 km²_ |
-| **% Change** | _236.99 %_ % |
+| **% Change** | _236.99 %_ |
 
 ---
 
-#### Stage 5 — Road Proximity Analysis
+#### Stage 5 - Road Proximity Analysis
 
 2,000 random sample points generated inside the ROI. Each point is attributed with:
-- `dist_m` — distance to major road network
-- `builtup_density` — 250m focal mean of the 2025 built-up mask
+- `dist_m` = distance to major road network
+- `builtup_density` = 250m focal mean of the 2025 built-up mask
 
-A **7.5 km buffer** is applied — this threshold captures the airport, the key infrastructure anchor at the edge of the study zone.
+A **7.5 km buffer** is applied - this threshold captures the airport, the key infrastructure anchor at the edge of the study zone.
 
 **Sample Points on Built-up Layer**
 <!-- Screenshot: geemap map showing cyan "Top Urban Hotspots" dots overlaid on the white built-up mask -->
 ![Sample Points](output/screenshot/sample_points_builtup.png)
 
-**Regression Plot — Distance vs. Built-up Density**
+**Regression Plot - Distance vs. Built-up Density**
 
-2nd-order polynomial fit (order=2) models the decay of built-up density with road distance. Order-3 is also noted to capture the secondary density spike near the airport (which currently lacks direct road connectivity as of March 2026).
+2nd-order polynomial fit (order=2) models the decay of built-up density with road distance and Airport proximity(at 5.5 kms from the nearest road(averaged)). 
 
 <!-- Screenshot: Seaborn regplot output — "Dholera SIR: Urban Activation Signal" -->
-![Regression Plot](output/screenshot/regression_distance_vs_density.png)
+![Regression Plot](output/screenshot/regression_distance_vs_density(o2).png)
+
+Order-3 is also noted to capture the secondary density spike near the airport (which currently lacks direct road connectivity as of March 2026).
+
+<!-- Screenshot: Seaborn regplot output — "Dholera SIR: Urban Activation Signal" -->
+![Regression Plot](output/screenshot/regression_distance_vs_density(o3).png)
 
 ---
 
-#### Stage 6 — Master Accessibility Surface
+#### Stage 6 - Master Accessibility Surface
 
 A weighted fused raster combining road and infrastructure accessibility:
 
-- **Road layer** — sigmoid decay by road hierarchy (motorway → tertiary), inflection at 3km
-- **Infrastructure layer** — exponential decay per node (Tier 1: airport/factory σ=5km; Tier 2: power/solar σ=2km), following Weber's agglomeration logic
-- **Final fusion** — `road_access × 0.4 + infra_access × 0.5`
-
-**Road Network (color-coded by hierarchy)**
-<!-- Screenshot: geemap map with color-coded road vectors overlaid — Red=Motorway, Orange=Trunk, Yellow=Primary, Green=Secondary, Magenta=Tertiary -->
-![Road Network](output/screenshot/road_network_hierarchy.png)
+- **Road layer** - sigmoid decay by road hierarchy (motorway → tertiary), inflection at 3km
+- **Infrastructure layer** - exponential decay per node (Tier 1: airport/factory σ=5km; Tier 2: power/solar σ=2km), following Weber's agglomeration logic
+- **Final fusion** - `road_access × 0.4 + infra_access × 0.6`
 
 **Master Accessibility Surface**
 <!-- Screenshot: "Master Accessibility Surface" heatmap layer with colorbar (dark=low, bright yellow=high), geemap -->
