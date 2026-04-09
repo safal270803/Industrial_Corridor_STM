@@ -182,6 +182,56 @@ This follows **Weber’s industrial location theory**, where economic activity c
 | Master accessibility surface | Fused road + infrastructure heatmap raster |
 
 ---
+## Key Findings
+
+The analysis reveals an **infrastructure-first development pattern**, where spatial accessibility - rather than existing land use — is the primary driver of urbanization in Dholera SIR.
+
+---
+
+### 1. Rapid Built-up Expansion
+
+Dholera SIR underwent substantial physical transformation over the 9-year study period.
+
+| Metric | Value |
+|---|---|
+| Built-up area (2016) | 10.537 km² |
+| Built-up area (2025) | 35.509 km² |
+| Net new growth | 34.013 km² |
+| **Total expansion** | **+236.99%** |
+
+This marks a clear shift from a predominantly rural and saline landscape to an emerging industrial footprint.
+
+---
+
+### 2. The "Roads Ahead of Growth" Paradox
+
+A central finding is the statistical decoupling of road proximity from built-up density.
+
+| Metric | Value | Interpretation |
+|---|---|---|
+| Pearson r | −0.0284 | Very weak road-proximity effect |
+| R² | 0.0053 | < 1% of variance explained by road distance |
+
+Road infrastructure in Dholera has been laid ahead of urbanization - across barren and saline land - to activate future development zones, rather than responding to organic growth. This is a defining characteristic of planned industrial corridor development.
+
+---
+
+### 3. Dual-Anchor Development Model
+
+Regression analysis indicates that built-up growth is being shaped by two distinct spatial anchors rather than a single road-based gradient.
+
+- **Primary spine** - Growth concentrated along main transport and industrial corridors
+- **Secondary hub** - An order-3 polynomial fit resolved a secondary density peak approximately 5.5 km from the main road network, corresponding to the Dholera International Airport zone
+
+This confirms that major infrastructure nodes generate independent urban density clusters, even in the absence of direct road connectivity.
+
+---
+
+### 4. Composite Accessibility Explains Growth Better
+
+Modeling accessibility as a weighted fusion of sigmoid road decay and exponential infrastructure decay - distinguishing Tier 1 nodes (airport, industrial zones) from Tier 2 nodes (solar, power infrastructure) - captures the spatial pattern of growth more accurately than road distance alone. This supports the use of multi-source accessibility surfaces for planning and impact assessment in corridor cities.
+
+---
 
 ## Limitations
 
