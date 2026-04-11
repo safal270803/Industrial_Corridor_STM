@@ -184,7 +184,7 @@ This follows **Weber’s industrial location theory**, where economic activity c
 ---
 ## Key Findings
 
-The analysis reveals an **infrastructure-first development pattern**, where spatial accessibility - rather than existing land use — is the primary driver of urbanization in Dholera SIR.
+The analysis reveals an **infrastructure-first development pattern**, where spatial accessibility - rather than existing land use - is the primary driver of urbanization in Dholera SIR.
 
 ---
 
