@@ -318,10 +318,10 @@ Area computed at 10 m native Sentinel-2 resolution using `ee.Image.pixelArea()` 
 
 | Class | Area (km²) | Share (%) |
 |---|---|---|
-| 🔴 Active Industrial | 12.49 | 35.17 |
-| 🟣 Dormant / Speculative | 11.05 | 31.10 |
-| 🟠 Under-Construction | 11.97 | 33.70 |
-| **Total Built-up** | **35.51** | **100.0** |
+| 🔴 Active Industrial | 18.836 | 35.2 |
+| 🟣 Dormant / Speculative | 16.673 | 31.1 |
+| 🟠 Under-Construction | 18.053 | 33.7 |
+| **Total Built-up** | **53.562** | **100.0** |
 
 **Industrial Utilisation Ratio (IUR):**
 
