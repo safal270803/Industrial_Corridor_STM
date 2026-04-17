@@ -1,5 +1,5 @@
 # Industrial Corridor STM
-### RQ1 : Built-up Growth & Infrastructure Accessibility: Dholera SIR (2016–2025)
+### RQ1 : Built-up Growth & Infrastructure Accessibility: Dholera (2016–2025)
 
 ---
 
@@ -251,7 +251,7 @@ Modeling accessibility as a weighted fusion of sigmoid road decay and exponentia
 
 ## Overview
 
-This study moves beyond physical footprint mapping to interrogate the **economic activation** of built-up land — distinguishing genuinely productive industrial zones from speculative or transitional ones.
+This study moves beyond physical footprint mapping to interrogate the **economic activation** of built-up land - distinguishing genuinely productive industrial zones from speculative or transitional ones.
 
 > **Built-up area alone is not evidence of economic activity; the spatial distribution of nighttime luminosity within the built-up envelope reveals actual utilisation.**
 
@@ -273,13 +273,13 @@ This study moves beyond physical footprint mapping to interrogate the **economic
 | NOAA VIIRS DNB Monthly V1 | Nighttime radiance (`avg_rad`) | Oct 2025–Mar 2026 |
 | Dholera Taluka boundary | ROI geometry | — |
 
-> VIIRS composite uses a median reducer over 6 months to suppress cloud and ephemeral noise. Luminosity threshold set at **0.6 nW/cm²/sr** — calibrated to Dholera's near-zero background radiance — to capture dim industrial signatures (e.g., airport aprons, utility yards).
+> VIIRS composite uses a median reducer over 6 months to suppress cloud and ephemeral noise. Luminosity threshold set at **0.6 nW/cm²/sr** - calibrated to Dholera's near-zero background radiance - to capture dim industrial signatures (e.g., airport aprons).
 
 ---
 
 ## Analytical Pipeline
 
-### Stage 1 — VIIRS Nighttime Lights
+### Stage 1 - VIIRS Nighttime Lights
 
 The Suomi NPP satellite captures radiance at ~1:30 AM local time, providing a direct proxy for economic activity independent of daytime spectral ambiguity.
 
@@ -289,13 +289,13 @@ The Suomi NPP satellite captures radiance at ~1:30 AM local time, providing a di
 
 ---
 
-### Stage 2 — Built-up Mask (Reused from RQ1)
+### Stage 2 - Built-up Mask (Reused from RQ1)
 
 The 2025 built-up mask (NDBI > 0.05, MNDWI < 0, SAVI < 0.18) from RQ1 serves as the spatial base layer. All typology classification is applied exclusively within this confirmed built-up envelope.
 
 ---
 
-### Stage 3 — Cluster Typology Classification
+### Stage 3 - Cluster Typology Classification
 
 Each built-up pixel is assigned one of four classes by layering nighttime luminosity and soil-disturbance conditions onto the base mask:
 
@@ -306,13 +306,13 @@ Each built-up pixel is assigned one of four classes by layering nighttime lumino
 | 🟣 | Dormant / Speculative | `built_up = 1` AND `VIIRS ≤ 0.6` |
 | 🟠 | Under-Construction | `0.18 < SAVI < 0.3` AND `NDBI > 0.05` AND `MNDWI < −0.4` |
 
-> The under-construction class is an additive layer over the built-up mask, capturing soil-disturbance signatures characteristic of active earthworks — **not** mature vegetation or saline background.
+> The under-construction class is an additive layer over the built-up mask, capturing soil-disturbance signatures characteristic of active earthworks - **not** mature vegetation or saline background.
 
 ![Cluster Typology Map](output/screenshot/cluster_typology_rq2.png)
 
 ---
 
-### Stage 4 — Area Statistics & Industrial Utilisation Ratio (IUR)
+### Stage 4 - Area Statistics & Industrial Utilisation Ratio (IUR)
 
 Area computed at 10 m native Sentinel-2 resolution using `ee.Image.pixelArea()` grouped by cluster class.
 
@@ -325,7 +325,7 @@ Area computed at 10 m native Sentinel-2 resolution using `ee.Image.pixelArea()` 
 
 **Industrial Utilisation Ratio (IUR):**
 
-$$\text{IUR} = \frac{\text{Active Industrial Area}}{\text{Total Built-up Area}} \times 100 = \mathbf{35.17\%}$$
+$$\text{IUR} = \frac{\text{Active Industrial Area}}{\text{Total Built-up Area}} \times 100 = \mathbf{35.2\%}$$
 
 ---
 
@@ -333,19 +333,19 @@ $$\text{IUR} = \frac{\text{Active Industrial Area}}{\text{Total Built-up Area}} 
 
 ### 1. Decoupling of Physical and Economic Growth
 
-While Dholera expanded its built-up footprint by **+236.99%** over the study period, an IUR of **35.17%** confirms that physical infrastructure has far outpaced economic activation. The majority of paved, developed land shows no measurable nighttime radiance.
+While Dholera expanded its built-up footprint by **+236.99%** over the study period, an IUR of **35.2%** confirms that physical infrastructure has far outpaced economic activation. The majority of paved, developed land shows no measurable nighttime radiance.
 
-### 2. Infrastructure as a Market Signal — Anticipatory Speculative Land Activation
+### 2. Infrastructure as a Market Signal - Anticipatory Speculative Land Activation
 
-The **31.1% Dormant** share is not evidence of failure — it is evidence of intent. Roads and utility grids in Dholera are not constructed to serve existing factories; they are deployed to **activate land value for future investors**, decoupling physical development from current productive use.
+The **31.1% Dormant** share is not evidence of failure - it is evidence of intent. Roads in Dholera are not constructed to serve existing factories; they are deployed to **activate land value for future investors**.
 
 ### 3. The "Ghost Grid" Phenomenon
 
-The spatial concentration of dark, paved plots — particularly around infrastructure anchors such as the Airport Hub — constitutes empirical evidence of **Land Expectation Behavior**: parcels prepared and held in anticipation of economic activation rather than immediate use.
+The spatial concentration of dark (low night light) plots, particularly around infrastructure anchors such as the Airport Hub and the concentration of paved plots around Solar Plant shows empirical evidence of **Land Expectation Behavior**: parcels prepared and held in anticipation of economic activation rather than immediate use.
 
 ### 4. A Pipeline of Transition
 
-The **33.7% Under-Construction** segment reveals that Dholera's speculative pipeline is nearly as large as its active footprint. The corridor is in a state of hyper-transformation, where transitional land — disturbed but not yet operational — rivals productive land in spatial extent.
+The **33.7% Under-Construction** segment reveals that Dholera's speculative pipeline is nearly as large as its active footprint. The corridor is in a state of hyper-transformation, where transitional land - disturbed but not yet operational - rivals productive land in spatial extent.
 
 ---
 
@@ -353,7 +353,7 @@ The **33.7% Under-Construction** segment reveals that Dholera's speculative pipe
 
 - VIIRS resolution (~500 m) may conflate dim industrial activity with true darkness in low-density zones
 - Nighttime radiance is a proxy for economic activity, not a direct measure of output or employment
-- Under-construction classification relies on SAVI disturbance thresholds — subject to seasonal soil moisture variation
+- Under-construction classification relies on SAVI disturbance thresholds - subject to seasonal soil moisture variation
 
 ---
 
