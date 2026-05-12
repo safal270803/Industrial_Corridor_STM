@@ -358,3 +358,234 @@ The **33.7% Under-Construction** segment reveals that Dholera's speculative pipe
 ---
 
 > All analysis code is contained in the `RQ2` notebook.
+
+# RQ3 : Sustainability & Spatial Misalignment: Dholera SIR (2025)
+
+---
+
+## Overview
+
+This study shifts from measuring *what* has been built (RQ1) and *how much of it is active* (RQ2) to interrogating **where** it has been built - and at what ecological cost.
+
+> **Physical infrastructure deployment ahead of urbanisation is not ecologically neutral; the spatial pattern of new built-up growth encodes measurable environmental trade-offs in vegetation loss, heat susceptibility, and flood exposure.**
+
+**Research Question:** Does the spatial footprint of Dholera's built-up expansion overlap with environmentally sensitive or climatically vulnerable terrain, and does corridor development carry a quantifiable ecological cost?
+
+| Hypothesis | Statement |
+|---|---|
+| H1 | Built-up expansion is associated with declining vegetation cover and increased surface heat susceptibility |
+| H2 | A share of new built-up areas overlaps with environmentally sensitive or water-prone zones |
+
+---
+
+## Setup
+
+```bash
+pip install geemap earthengine-api geopandas matplotlib
+```
+
+```python
+import geemap
+geemap.ee_initialize()   # Requires GEE authentication
+```
+
+---
+
+## Data
+
+| Source | Variable | Period |
+|---|---|---|
+| Sentinel-2 SR Harmonized | NDBI, MNDWI, SAVI, NDVI | Oct-Dec 2016 & 2025 |
+| Sentinel-1 GRD (IW, VV, Descending) | SAR backscatter for inundation mapping | Jun-Oct 2025 (monsoon), Mar-May 2025 (dry baseline) |
+| Copernicus GLO-30 DEM | Elevation (m above sea level) | - |
+| Dholera Taluka boundary | ROI geometry | - |
+
+> SAR is used instead of Sentinel-2 MNDWI for flood detection because cloud cover over Dholera during monsoon season routinely exceeds 50%, making optical sensors unreliable.
+
+---
+
+## Analytical Pipeline
+
+### Stage 1 - Built-up Masks & Vegetation Change (Reused from RQ1)
+
+Oct-Dec composites for both years.
+
+**SAVI Delta (2025 - 2016):**
+
+SAVI delta is computed as a change layer across the full taluka. A key observational note: net SAVI across the entire ROI is *higher* in 2025 than 2016, attributable to stronger monsoon rainfall in 2025 rather than genuine greening. For this reason, vegetation loss analysis is deliberately constrained to the **new growth footprint only**, pixels classified as Class 2 (new built-up, 2016-2025) - where the anthropogenic signal dominates the monsoon-driven noise.
+
+---
+
+### OUTPUT 1 - Land Transformation Map
+
+Isolates pixels that **simultaneously urbanised and lost vegetation** between 2016 and 2025.
+
+**Logic:**
+
+```
+Vegetation Loss in Growth = (GrowthClass == 2) AND (SAVI_Delta < 0)
+```
+
+The map layers the SAVI decline gradient (pale yellow = marginal loss → deep red = severe loss) over the full 34 km² new growth footprint (charcoal base), revealing the spatial distribution and intensity of biomass conversion.
+
+![Land Transformation Map](output/screenshot/land_transformation_map_rq3.png)
+
+**Key Statistics - H1 Test:**
+
+| Metric | Value |
+|---|---|
+| New Built-up Growth (2016→2025) | 34.013 km² |
+| Growth ∩ Vegetation Loss Area | *28.203* km² |
+| Share of new growth at cost of local biomass | *82.9* % |
+| Avg SAVI Loss per km² of new growth | *-0.1927* |
+
+> Each km² of new industrial footprint carries a measurable average SAVI decline - the ecological price tag of corridor expansion.
+
+---
+
+### OUTPUT 2 - Heat Susceptibility Map
+
+A **composite spectral index** - not a direct LST measurement - that proxies urban heat stress using the balance between built-up surface signal and vegetation buffer:
+
+```
+Heat_Index = NDBI_norm - SAVI_norm
+```
+
+Both indices are min-max normalised to 0-1 before differencing:
+- `NDBI_norm`: anchored to `[-0.5, +0.5]` → mapped to `[0, 1]`
+- `SAVI_norm`: anchored to `[0, 0.8]` → mapped to `[0, 1]`
+
+Output values range `[-1, +1]`:
+- **Positive** = high heat susceptibility (built-up dominates, no vegetation buffer)
+- **Negative** = low heat susceptibility (vegetated, evapotranspiration active)
+
+The map uses a diverging palette: cool blue (vegetated/resilient) → neutral white → fiery red (built-up/heat-exposed).
+
+![Heat Susceptibility Map](output/screenshot/heat_susceptibility_map_rq3.png)
+
+---
+
+### OUTPUT 3 - Flood Risk Overlay (Bivariate FVI)
+
+#### Why SAR?
+
+Sentinel-2 MNDWI is unusable during peak monsoon - cloud cover over Dholera during June-September routinely exceeds 50%. Sentinel-1 C-band SAR penetrates cloud cover completely; open water returns near-zero backscatter, making the land/water contrast unambiguous.
+
+#### SAR Pipeline (per image)
+
+1. **Load** - IW mode, VV polarisation, descending orbit
+2. **Speckle filter** - focal mean, 3×3 kernel, applied *before* thresholding
+3. **Threshold** - VV < -17 dB → binary water mask
+4. **Permanent water exclusion** - dry-season baseline (Mar-May 2025) used to suppress perennial features (salt pans, reservoirs) from the monsoon flood signal
+
+#### Inundation Frequency Surface
+
+```
+Flood_Freq = mean(binary water mask across all monsoon S1 passes)
+```
+
+Each pixel value represents the proportion of SAR overpasses showing a water signature, after permanent water exclusion.
+
+| Frequency Range | Interpretation |
+|---|---|
+| > 0.60 | Semi-permanent inundation (natural depression / channel) |
+| 0.35-0.60 | Recurring monsoon flooding (structural sink) |
+| 0.10-0.35 | Episodic flooding (peak rain events) |
+| 0.05-0.10 | Flash inundation (drains within days) |
+| < 0.05 | Effectively non-flooded during monsoon 2025 |
+
+![Inundation Frequency Surface Map](output/screenshot/innundation_map_rq3.png) 
+
+#### Flood Vulnerability Index (FVI) - Classification Rules
+
+| Class | Symbol | Criteria | Interpretation |
+|---|---|---|---|
+| 1 | ✅ Low | Everything else | Topographically resilient or low radar water signature |
+| 2 | ⚠️ Moderate | `Elevation ≤ 8m` AND `Freq > 0.10` | Conditionally flood-prone |
+| 3 | 🚨 High | `Elevation ≤ 5m` AND `Freq > 0.35` | Structural sink - floods every monsoon |
+
+> Priority order: Low (base) → Moderate overwrites → High overwrites. Permanent water pixels are masked out of the final FVI entirely - they are not flood risk zones.
+
+![Flood Vulnerability Index Map](output/screenshot/fvi_map_rq3.png)
+
+**Area Statistics - H2 Test:**
+
+| FVI Class | Area (km²) | Share of ROI (%) |
+|---|---|---|
+| ✅ Low Risk | *983.651* | 84.9 |
+| ⚠️ Moderate Risk | *164.324* | 14.2 |
+| 🚨 High Risk | *10.672* | 0.9 |
+
+| H2 Metric | Value |
+|---|---|
+| New Growth in Moderate Risk Zone | *8.865* km² (*26.1% of new growth*) |
+| New Growth in High Risk Zone | *0.027* km² (*0.1% of new growth*) |
+| **Total New Growth in Risk Zones** | ***8.892* km²** |
+
+---
+
+### OUTPUT 4 - Environmental Exposure Layer
+
+A single composite surface fusing both risk dimensions into one normalised index:
+
+```
+Env_Exposure = 0.5 × HeatRisk_norm + 0.5 × FloodRisk_norm
+```
+
+| Component | Normalisation |
+|---|---|
+| Heat Risk | `(heat_index + 0.5) / 1.2`, clamped to `[0, 1]` |
+| Flood Risk | `(FVI_class - 1) / 2` → Low = 0.0, Moderate = 0.5, High = 1.0 |
+
+Output range: `0` (no environmental exposure) → `1` (maximum combined heat + flood risk). The equal weighting treats heat susceptibility and flood vulnerability as co-equal sustainability concerns.
+
+The new growth footprint overlay on this layer provides a direct visual read of how much of Dholera's infrastructure pipeline sits inside high-exposure terrain.
+
+![Environmental Exposure Layer](output/screenshot/env_exposure_rq3.png)
+
+---
+
+## Key Outputs
+
+| Output | Description |
+|---|---|
+| Land Transformation Map | SAVI decline gradient within new growth footprint; vegetation loss intensity visualised |
+| Vegetation Loss Statistics | Area (km²) and share (%) of new growth that coincided with biomass loss; avg SAVI decline per km² |
+| Heat Susceptibility Map | Continuous NDBI_norm − SAVI_norm index across taluka; diverging blue-to-red palette |
+| SAR Flood Frequency Surface | Per-pixel monsoon inundation frequency from Sentinel-1; permanent water excluded via dry-season baseline |
+| Flood Vulnerability Index (FVI) | 3-class bivariate classification (terrain + SAR); new growth overlap statistics |
+| Environmental Exposure Layer | Equal-weighted composite of heat + flood normalised risk; 0–1 continuous surface |
+
+---
+
+## Key Findings
+
+### 1. Vegetation Loss is Concentrated, Not Diffuse
+
+Built-up expansion in Dholera is not uniformly levelling vegetation - the SAVI decline signal is spatially concentrated within specific sectors of the new growth footprint. Constraining the analysis to the new growth mask (rather than the full taluka) corrects for a dataset-level confound: 2025 SAVI is higher than 2016 across the whole ROI due to a stronger monsoon season, which would otherwise mask localised ecological degradation with corridor-wide greening.
+
+### 2. Infrastructure Deployment Carries a Measurable Ecological Price Tag
+
+The average SAVI decline per km² of new industrial footprint quantifies the biomass cost of corridor expansion in a form directly comparable across future study periods or other corridor sites. This is not merely a land-cover statistic - it is an ecological liability metric.
+
+### 3. A Measurable Share of New Growth Occupies Flood-Vulnerable Terrain
+
+The FVI overlay on the new growth footprint confirms H2: a portion of Dholera's infrastructure investment has been placed inside terrain confirmed as flood-prone by SAR inundation evidence - terrain that is low-elevation and repeatedly inundated during monsoon. This is not incidental; it reflects the planned-corridor model of deploying infrastructure across the full taluka regardless of micro-terrain suitability.
+
+### 4. The Dual Exposure Problem
+
+Spatial co-occurrence of heat susceptibility and flood vulnerability - captured in the Environmental Exposure Layer - reveals that some zones face *compound* environmental risk: high built-up density with minimal vegetation buffer, situated on low-lying, repeatedly inundated terrain. This dual exposure pattern is a direct consequence of the infrastructure-first development logic documented in RQ1 and RQ2.
+
+---
+
+## Limitations
+
+- **SAVI delta monsoon confound** - Net vegetation signal in 2025 is elevated due to stronger monsoon rainfall; analysis is scoped to new growth footprint to mitigate this, but residual seasonal noise cannot be fully eliminated
+- **GLO-30 vertical accuracy** - ~4 m absolute vertical error over flat terrain; in an area where FVI thresholds are set at 5 m and 8 m, this introduces classification uncertainty in boundary pixels
+- **SAR thresholding** - The -17 dB water detection threshold is applied uniformly; smooth bare soil and salt pans can produce false water signatures even after permanent water exclusion
+- **Heat index is a spectral proxy** - Not a direct land surface temperature measurement; does not account for albedo variation, emissivity differences, or diurnal timing of Sentinel-2 acquisition
+- **Equal weighting in ENV exposure** - The 50/50 heat/flood composite is analytically expedient but not empirically calibrated; different weighting schemes would shift the spatial pattern of high-exposure zones
+
+---
+
+> All analysis code is contained in the `RQ3` notebook.
