@@ -1,0 +1,9 @@
+solara==1.35.1
+geemap==0.32.1
+earthengine-api==0.1.390
+pandas==2.2.2
+numpy==1.26.4
+geopandas==1.0.1
+scikit-learn==1.4.2
+seaborn==0.13.2
+matplotlib==3.8.4
