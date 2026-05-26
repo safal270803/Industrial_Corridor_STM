@@ -19,7 +19,6 @@ def _init_gee():
     Reads a single Service Account JSON text string stored in cloud secrets.
     """
     try:
-        # Standardized single-key configuration profile
         sa_key_json = os.environ.get("EE_SERVICE_ACCOUNT_KEY", "")
 
         if sa_key_json:
@@ -47,55 +46,30 @@ _init_gee()
 
 
 # ──────────────────────────────────────────────────────────────────────
-#  Shared Layout Template Wrapper
+#  Shared Layout Template Wrapper (Standard Native Theme)
 # ──────────────────────────────────────────────────────────────────────
 
 @solara.component
 def Layout(children=[]):
     """
     Universal app shell template. Solara automatically scans the
-    remaining files in your pages/ directory to populate the sidebar tabs.
+    remaining files in your pages/ directory to populate the sidebar navigation.
     """
-    with solara.Column(
-        style="min-height: 100vh; background: #0d1117; width: 100%; display: flex; flex-direction: column;"
-    ):
+    # Use Solara's native AppLayout to build a standard scientific dashboard container
+    with solara.AppLayout(navigation=True):
+        
+        # ── Global App Header Bar ──
+        with solara.AppBar():
+            with solara.Row(style={"align-items": "center", "gap": "12px"}):
+                solara.Text("🛰️", style={"font-size": "24px"})
+                with solara.Column(style={"gap": "2px"}):
+                    solara.Markdown("### Dholera SIR — Spatial Intelligence Dashboard")
+                    solara.Text(
+                        "Google Earth Engine · Sentinel-2 · VIIRS · SAR Imagery", 
+                        style={"font-size": "11px", "opacity": "0.7"}
+                    )
 
-        # ── Top Identity Banner ──────────────────────────────────────────
-        with solara.Row(
-            style=(
-                "background: linear-gradient(90deg, #0d1117 0%, #161b22 100%);"
-                "border-bottom: 1px solid #30363d;"
-                "padding: 16px 32px;"
-                "align-items: center;"
-                "gap: 16px;"
-            )
-        ):
-            solara.Text(
-                "🛰️",
-                style="font-size: 28px; line-height: 1;",
-            )
-            with solara.Column(style="gap: 4px;"):
-                solara.Text(
-                    "Dholera SIR — Spatial Intelligence Dashboard",
-                    style=(
-                        "font-family: 'IBM Plex Mono', monospace;"
-                        "font-size: 18px;"
-                        "font-weight: 700;"
-                        "color: #e6edf3;"
-                        "letter-spacing: 0.5px;"
-                    ),
-                )
-                solara.Text(
-                    "Google Earth Engine  ·  Sentinel-2  ·  VIIRS  ·  SAR Imagery",
-                    style=(
-                        "font-family: 'IBM Plex Mono', monospace;"
-                        "font-size: 11px;"
-                        "color: #8b949e;"
-                        "letter-spacing: 1px;"
-                    ),
-                )
-
-        # ── Reactive Page Canvas Container ─────────────────────────────────
-        # Safe array containment mapping replaces erratic display unpacking
-        with solara.Column(style="flex: 1; padding: 24px 32px; width: 100%;"):
-            solara.Column(children=children, style="width: 100%;")
+        # ── Reactive Page Canvas Container ──
+        # Provides clean, uniform padding for whatever child page script is loaded
+        with solara.Padding(24):
+            solara.Column(children=children, style={"width": "100%"})
