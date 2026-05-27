@@ -139,7 +139,7 @@ def Page():
     with solara.Column(style={"gap": "24px", "padding": "10px"}):
 
         # ── Academic Header Block ──
-        solara.Markdown("# RQ1 — Infrastructure-Led Urbanization Patterns")
+        solara.Markdown("# RQ1: Infrastructure-Led Urbanization Patterns")
         solara.Markdown(
             "**Research Direction:** Has infrastructure development in Dholera SIR driven measurable built-up growth, "
             "and does proximity to roads and key infrastructure nodes explain the spatial pattern of urbanization?"
