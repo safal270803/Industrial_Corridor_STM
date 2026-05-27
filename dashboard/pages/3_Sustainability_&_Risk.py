@@ -119,6 +119,57 @@ def _env_exposure(heat_index, fvi_img):
     flood_norm = fvi_img.subtract(1).divide(2).clamp(0, 1)
     return heat_norm.multiply(0.5).add(flood_norm.multiply(0.5)).rename("EnvExposure")
 
+def _calculate_indices(image):
+    """Computes NDBI, MNDWI, and SAVI required for built-up filtering."""
+    ndbi = image.expression(
+        '(SWIR1 - NIR) / (SWIR1 + NIR)',
+        {'SWIR1': image.select('B11'), 'NIR': image.select('B8')}
+    ).rename('NDBI')
+
+    mndwi = image.expression(
+        '(Green - SWIR1) / (Green + SWIR1)',
+        {'Green': image.select('B3'), 'SWIR1': image.select('B11')}
+    ).rename('MNDWI')
+
+    savi = image.expression(
+        '((NIR - Red) * 1.5) / (NIR + Red + 0.5)',
+        {'NIR': image.select('B8'), 'Red': image.select('B4')}
+    ).rename('SAVI')
+
+    return image.addBands([ndbi, mndwi, savi])
+
+
+def _get_growth_class(roi):
+    """Generates the 4-class urban growth layer matching the notebook thresholds."""
+    s2_2016_raw = _s2("2016-10-01", "2016-12-31", roi)
+    s2_2025_raw = _s2("2025-10-01", "2025-12-31", roi)
+
+    processed_2016 = _calculate_indices(s2_2016_raw)
+    processed_2025 = _calculate_indices(s2_2025_raw)
+
+    # 2016 Built-up Mask (Threshold > 0.13)
+    built_up_2016 = processed_2016.expression(
+        '(NDBI > 0.13) && (MNDWI < 0) && (SAVI < 0.18)',
+        {'NDBI': processed_2016.select('NDBI'), 'MNDWI': processed_2016.select('MNDWI'), 'SAVI': processed_2016.select('SAVI')}
+    ).rename('BuiltUp_2016')
+
+    # 2025 Built-up Mask (Threshold > 0.05)
+    built_up_2025 = processed_2025.expression(
+        '(NDBI > 0.05) && (MNDWI < 0) && (SAVI < 0.18)',
+        {'NDBI': processed_2025.select('NDBI'), 'MNDWI': processed_2025.select('MNDWI'), 'SAVI': processed_2025.select('SAVI')}
+    ).rename('BuiltUp_2025')
+
+    change_stack = built_up_2016.rename('y2016').addBands(built_up_2025.rename('y2025'))
+
+    growth_class = change_stack.expression(
+        "(b('y2016') == 0 && b('y2025') == 0) ? 0"   # No built-up
+        ": (b('y2016') == 1 && b('y2025') == 1) ? 1"  # Stable
+        ": (b('y2016') == 0 && b('y2025') == 1) ? 2"  # New Growth
+        ": (b('y2016') == 1 && b('y2025') == 0) ? 3"  # Lost
+        ": 0"
+    ).rename('GrowthClass').clip(roi)
+
+    return growth_class
 
 # ──────────────────────────────────────────────────────────────────────
 #  2. Empirical Metrics & Bar Charts (Retaining All Logic)
@@ -172,7 +223,7 @@ def Page():
     with solara.Column(style={"gap": "24px", "padding": "10px"}):
 
         # ── Academic Header Block ──
-        solara.Markdown("# RQ3 — Sustainability & Environmental Risk Realignment")
+        solara.Markdown("# RQ3: Sustainability & Environmental Risk Realignment")
         solara.Markdown(
             "**Research Direction:** Does the physical footprint of Dholera's built-up expansion overlap with environmentally critical "
             "or climatically vulnerable terrain sinks, and does corridor deployment introduce systematic spatial risk?"
@@ -189,27 +240,53 @@ def Page():
                 elif s["type"] == "error":
                     solara.Error(label=s["label"], children=[s["value"]])
 
-        # ── Map 1: Biomass Transformation Card ──
+        # ── Map 1: Biomass Transformation Card (UPDATED) ──
         with solara.Card("Biomass Transformation Map — SAVI Loss Profile Within New Growth"):
             solara.Markdown(
                 "**Legend Gradient:** Pale yellow (marginal biomass decay) → Deep red (severe removal) "
-                "· *82.9% of new growth matches local biomass depletion.*"
             )
             try:
                 roi = _get_roi()
                 s2_2016 = _s2("2016-10-01", "2016-12-31", roi)
                 s2_2025 = _s2("2025-10-01", "2025-12-31", roi)
+                
                 savi_16 = _savi(s2_2016)
                 savi_25 = _savi(s2_2025)
-                savi_delta = savi_25.subtract(savi_16).rename("SAVI_Delta")
+                savi_delta = savi_25.subtract(savi_16).rename("SAVI_Delta").clip(roi)
 
-                m1 = geemap.Map(center=[22.37, 72.05], zoom=11)
+                # Fetch our growth footprint map layer logic
+                growth_class = _get_growth_class(roi)
+                new_growth_mask = growth_class.eq(2) # Class 2 = New Urban Growth
+                new_growth_flat = new_growth_mask.selfMask()
+
+                # Isolate biomass loss solely on the active construction footprints
+                veg_loss_in_growth = savi_delta.updateMask(
+                    new_growth_mask.And(savi_delta.lt(0))
+                )
+
+                m1 = geemap.Map()
+                m1.centerObject(roi, 10)
                 m1.add_basemap("HYBRID")
+
+                # Layer 1: Flat charcoal footprint baseline (from your notebook)
+                m1.addLayer(
+                    new_growth_flat,
+                    {"min": 1, "max": 1, "palette": ["#444444"]},
+                    "New Growth Footprint (34 km²)", shown=False
+                )
+
+                # Layer 2: Targeted vegetation loss gradient mapped strictly over growth
+                m1.addLayer(
+                    veg_loss_in_growth,
+                    {"min": -0.3, "max": 0, "palette": ["#800026", "#e31a1c", "#fd8d3c", "#ffffb2"]},
+                    "Vegetation Loss Intensity (ΔSAVI)", shown=False
+                )
                 m1.addLayer(
                     savi_delta.updateMask(savi_delta.lt(0)),
                     {"min": -0.3, "max": 0, "palette": ["#800026", "#e31a1c", "#fd8d3c", "#ffffb2"]},
-                    "SAVI Delta (Vegetation Loss)"
+                    "SAVI Delta (Vegetation Loss)", shown=True
                 )
+                
                 m1.layout.height = "480px"
                 solara.display(m1)
             except Exception as e:
@@ -222,7 +299,8 @@ def Page():
             )
             try:
                 heat = _heat_index(s2_2025)
-                m2 = geemap.Map(center=[22.37, 72.05], zoom=11)
+                m2 = geemap.Map()
+                m2.centerObject(roi, 10)
                 m2.add_basemap("HYBRID")
                 m2.addLayer(
                     heat,
@@ -237,25 +315,20 @@ def Page():
         # ── Map 3 & Chart Combo: Flood Vulnerability Index ──
         with solara.GridFixed(columns=2):
             with solara.Card("Bivariate Flood Vulnerability Index (FVI) Map"):
+                solara.Markdown(
+                "**Legend Gradient**: \n🌿 Low Risk (Resilient Terrain)\n 🟧 Moderate Risk (Episodic Pooling) \n→ 🔴 High Risk (Topographic Sink)"
+                )
                 try:
                     flood, perm_water = _sar_flood_freq(roi)
                     fvi = _fvi(flood, perm_water, roi)
                     
-                    m3 = geemap.Map(center=[22.37, 72.05], zoom=11)
+                    m3 = geemap.Map()
+                    m3.centerObject(roi, 10)
                     m3.add_basemap("HYBRID")
                     m3.addLayer(
                         fvi,
                         {"min": 1, "max": 3, "palette": ["2d6a4f", "f4a261", "d62828"]},
                         "FVI Choropleth Map"
-                    )
-                    m3.add_legend(
-                        title="FVI Risk Index",
-                        legend_dict={
-                            "Low Risk (Resilient Terrain)": "2d6a4f",
-                            "Moderate Risk (Episodic Pooling)": "f4a261",
-                            "High Risk (Topographic Sink)": "d62828"
-                        },
-                        position="bottomright"
                     )
                     m3.layout.height = "400px"
                     solara.display(m3)
@@ -277,7 +350,8 @@ def Page():
             )
             try:
                 exposure = _env_exposure(heat, fvi)
-                m4 = geemap.Map(center=[22.37, 72.05], zoom=11)
+                m4 = geemap.Map()
+                m4.centerObject(roi, 10)
                 m4.add_basemap("HYBRID")
                 m4.addLayer(
                     exposure,

@@ -151,7 +151,7 @@ def Page():
     with solara.Column(style={"gap": "24px", "padding": "10px"}):
 
         # ── Academic Header Block ──
-        solara.Markdown("# RQ2 — Economic Utilization & Cluster Typology")
+        solara.Markdown("# RQ2: Economic Utilization & Cluster Typology")
         solara.Markdown(
             "**Research Direction:** What proportion of Dholera's built-up footprint is actively generating economic activity, "
             "and how is structural utilization distributed across the corridor grid?"
@@ -161,13 +161,13 @@ def Page():
         with solara.GridFixed(columns=4):
             # Master KPI callout container using Solara native header alerts
             solara.Warning(
-                label="Master Index", 
-                children=[f"Industrial Utilisation Ratio: {IUR}% (of {TOTAL_KM2} km² footprint)"]
+                label="\n", 
+                children=[f"\nIndustrial Utilisation Ratio: {IUR}% (of {TOTAL_KM2} km² footprint)"]
             )
             # Dynamic generation using standard semantic cards instead of manual raw CSS loops
-            solara.Success(label="Active Industrial Core", children=["Footprint: 18.836 km² (35.2%)"])
-            solara.Warning(label="Dormant / Speculative", children=["Footprint: 16.673 km² (31.1%)"])
-            solara.Info(label="Active Under-Construction", children=["Footprint: 18.053 km² (33.7%)"])
+            solara.Success(label="Active Industrial Core \n", children=["\n: 18.836 km² (35.2%)"])
+            solara.Warning(label="Dormant / Speculative \n", children=["\n: 16.673 km² (31.1%)"])
+            solara.Info(label="Active Under-Construction \n", children=["\n: 18.053 km² (33.7%)"])
 
         # ── Interactive Map Presentation Card ──
         with solara.Card("Macroeconomic Cluster Spatial Distribution Matrix"):
@@ -180,13 +180,15 @@ def Page():
                 viirs_roi = _viirs(roi)
                 cluster = _cluster_map(s2, viirs_roi, roi)
 
-                m = geemap.Map(center=[22.37, 72.05], zoom=11)
-                m.add_basemap("HYBRID")
+                m = geemap.Map()
+                m.centerObject(roi, 10)
+                m.add_basemap("CARTOBLACKBODY")
 
                 # Cloud Dataset Layers
                 m.addLayer(viirs_roi, {"min": 0, "max": 15, "palette": ["000000", "3d0066", "ff6600", "ffff99"]}, "VIIRS Nightlights (Inferno)", False)
                 m.addLayer(cluster, {"min": 0, "max": 3, "palette": ["1a1a1a", "#e63946", "#6a0572", "#f4a261"]}, "Cluster Typology Classification")
                 
+                """
                 m.add_legend(
                     title="Typology Class Index",
                     legend_dict={
@@ -195,7 +197,7 @@ def Page():
                         "Active Ground Construction": "f4a261"
                     },
                     position="bottomright"
-                )
+                )"""
                 m.layout.height = "520px"
                 solara.display(m)
 

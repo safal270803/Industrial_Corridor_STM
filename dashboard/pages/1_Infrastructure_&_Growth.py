@@ -147,10 +147,10 @@ def Page():
 
         # ── Empirical Stat Cards Grid ──
         with solara.GridFixed(columns=4):
-            solara.Info(label="Baseline Frame", children=["Built-up 2016: 10.54 km²"])
-            solara.Success(label="Current Horizon", children=["Built-up 2025: 35.51 km²"])
-            solara.Success(label="Net Transformation", children=["Expansion: +24.97 km² (+236.99%)"])
-            solara.Warning(label="Correlation Index", children=["Pearson r: −0.028 (Spine Ahead of Demand)"])
+            solara.Info(label="Baseline\n", children=["Built-up 2016: 10.54 km²"])
+            solara.Success(label="Current\n", children=["Built-up 2025: 35.51 km²"])
+            solara.Success(label="Net Transformation/\n", children=["Expansion: +24.97 km² (+236.99%)"])
+            solara.Warning(label="Correlation Index\n", children=["\nPearson r: −0.028 (Spine Ahead of Demand)"])
 
         # ── Map Presentation Card ──
         with solara.Card("Dynamic Spatial Matrix (2016 vs 2025)"):
@@ -160,7 +160,7 @@ def Page():
             try:
                 roi = _get_roi()
                 s2_2016 = _s2_composite("2016-10-01", "2016-12-31", roi, cloud_thresh=5)
-                s2_2025 = _s2_composite("2025-10-01", "2025-12-31", roi, cloud_thresh=40)
+                s2_2025 = _s2_composite("2025-10-01", "2025-12-31", roi, cloud_thresh=5)
                 
                 mask_2016 = _built_up_mask(s2_2016, ndbi_thresh=0.13) 
                 mask_2025 = _built_up_mask(s2_2025, ndbi_thresh=0.05) 
@@ -169,8 +169,10 @@ def Page():
                 # Compute 2025 indices for auxiliary map layers
                 ndbi_2025, mndwi_2025, savi_2025 = _get_spectral_indices(s2_2025)
 
-                m = geemap.Map(center=[22.37, 72.05], zoom=11)
-                m.add_basemap("HYBRID")
+                #m = geemap.Map(center=[22.37, 72.05], zoom=11)
+                m = geemap.Map()
+                m.centerObject(roi, 10)
+                m.add_basemap("CARTOBLACKBODY")
                 
                 # Inject Diagnostic Spectral Layers into the geemap layer controller
                 m.addLayer(ndbi_2025, {'min': -0.5, 'max': 0.5, 'palette': ['white', 'orange', 'red']}, 'NDBI (Urban 2025)', False)
@@ -179,14 +181,13 @@ def Page():
                 
                 # Primary Heatmap Layer
                 m.addLayer(growth, {"min": 0, "max": 3, "palette": ["1a1a1a", "cccccc", "ff4500", "1e90ff"]}, "🔥 Built-up Growth Classification")
-                
                 m.layout.height = "520px"
                 solara.display(m)
 
             except Exception as e:
                 solara.Error(f"Google Earth Engine Pipeline Failure: {str(e)}")
 
-        # ── 3rd Card: Master Accessibility Surface Analysis ──
+        # ── 2nd Card: Master Accessibility Surface Analysis ──
         with solara.Card("🗺️ Master Accessibility Surface Model (Weberian Economic Integration)"):
             solara.Markdown(
                 "Fuses hierarchical linear network metrics and proximity clusters into an integrated planning field score. "
@@ -197,7 +198,8 @@ def Page():
                 roi = _get_roi()
                 master_idx, road_acc, infra_acc = _compute_master_accessibility(roi)
                 
-                m_acc = geemap.Map(center=[22.37, 72.05], zoom=11)
+                m_acc = geemap.Map()
+                m_acc.centerObject(roi, 10)
                 m_acc.add_basemap("CARTOBLACKBODY")
                 
                 # Add diagnostic sub-layers turned off by default
@@ -211,7 +213,7 @@ def Page():
                 # Ingest local vector layers to overlay on top for clarity
                 infra_fc = geemap.geojson_to_ee(GEOJSON_INFRA)
                 m_acc.addLayer(infra_fc, {'color': 'cyan'}, 'Active Infra Nodes')
-                
+
                 m_acc.layout.height = "500px"
                 solara.display(m_acc)
                 
