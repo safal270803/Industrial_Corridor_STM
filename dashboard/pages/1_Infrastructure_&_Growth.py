@@ -145,6 +145,31 @@ def Page():
             "and does proximity to roads and key infrastructure nodes explain the spatial pattern of urbanization?"
         )
 
+        # ── Systemic Hypothesis Evaluation Framework ──
+        with solara.Card("Systemic Hypothesis Framework Summary"):
+            with solara.Column(style={"gap": "16px", "padding": "4px"}):
+                
+                # Hypothesis 1 Row
+                with solara.Row(justify="space-between", style={"align-items": "center", "border-bottom": "1px solid #e0e0e0", "padding-bottom": "8px"}):
+                    with solara.Column(style={"max-width": "80%"}):
+                        solara.Markdown("### **H1: Built-up density decreases with distance from major roads**")
+                        solara.Markdown("Tests if primary transportation corridors act as the immediate local drivers of settlement footprint density.")
+                    solara.Error(label="REJECTED", children=["✗ Linear Decay"])
+
+                # Hypothesis 2 Row
+                with solara.Row(justify="space-between", style={"align-items": "center", "border-bottom": "1px solid #e0e0e0", "padding-bottom": "8px"}):
+                    with solara.Column(style={"max-width": "80%"}):
+                        solara.Markdown("### **H2: Infrastructure nodes create secondary density clusters independent of road proximity**")
+                        solara.Markdown("Evaluates if macro anchors (e.g., airport, industrial nodes) generate localized, independent urban growth poles.")
+                    solara.Success(label="SUPPORTED", children=["✓ Node Clustering"])
+
+                # Hypothesis 3 Row
+                with solara.Row(justify="space-between", style={"align-items": "center"}):
+                    with solara.Column(style={"max-width": "80%"}):
+                        solara.Markdown("### **H3: A composite accessibility surface better explains growth than road distance alone**")
+                        solara.Markdown("Verifies if a multi-source fused accessibility model outperforms singular network proximity vectors.")
+                    solara.Success(label="SUPPORTED", children=["✓ Fused Surface"])
+
         # ── Empirical Stat Cards Grid ──
         with solara.GridFixed(columns=4):
             solara.Info(label="Baseline\n", children=["Built-up 2016: 10.54 km²"])
@@ -236,25 +261,33 @@ def Page():
                     solara.Markdown("### Order-3 Polynomial Fit")
                     solara.Image(str(IMG_POLY3_PATH))
 
-        # ── Hypothesis Evaluation Matrices ──
-        with solara.Card("Systemic Hypothesis Framework Summary"):
-            with solara.Column(style={"gap": "12px"}):
+        # ── Key Findings Evaluation Panel ──
+        with solara.Card("Core Urban Growth Empirical Findings"):
+            with solara.Column(style={"gap": "14px"}):
                 solara.Markdown(
-                    "**H1 — Urban built-up density directly decays with road distance**\n"
-                    "*Result:* **✗ Rejected** ($r = −0.028$). Road corridors function as long-range economic structural "
-                    "anchors rather than immediate local settlement drivers."
+                    "• **Physical infrastructure footprint expansion has undergone massive physical transformation:** "
+                    "Dholera SIR expanded its built-up area from 10.537 km² in 2016 to 35.509 km² by 2025, "
+                    "marking a +236.99% total net expansion from a predominantly rural, saline landscape."
                 )
                 solara.Markdown(
-                    "**H2 — Major infrastructure nodes create secondary spatial clusters**\n"
-                    "*Result:* **✓ Supported**. The 3rd-order curve fitting successfully isolates a significant urban density "
-                    "uptick surrounding the 5.5km airport radius boundary line."
+                    "• **Empirical metrics reveal a systemic 'Roads Ahead of Growth' Paradox:** "
+                    "Statistical correlation drops to near zero (Pearson r = −0.0284, R² = 0.0053), verifying that the "
+                    "transportation network was laid out proactively to activate future land markets rather than organically responding to existing settlement."
                 )
                 solara.Markdown(
-                    "**H3 — Multi-variable accessibility modeling out-performs single proximity lines**\n"
-                    "*Result:* **✓ Supported**. The Dual-Anchor framework explains multi-tiered development planning vectors "
-                    "far more accurately than singular distance-to-spine tracking vectors."
+                    "• **The Dual-Anchor Development Model establishes independent secondary growth poles:** "
+                    "Higher-order (order-3) polynomial regression successfully resolves a distinct secondary density peak at approximately 5.5 km "
+                    "from the main network lines, isolating a strong urban activation signal anchored around the Dholera International Airport zone."
                 )
-
+        
+        # ── Methodological System Limitations ──
+        with solara.Card("Methodological System Limitations"):
+            solara.Markdown(
+                "1. **Threshold-Based Spectral Index Classification** — The pipeline relies strictly on static index threshold constraints (NDBI > 0.05/0.13, MNDWI < 0, SAVI < 0.18) without formal ground-truth confusion matrix validation.\n"
+                "2. **Radiometric Contrast and Temporal Constraints** — Stricter NDBI limits were required for 2016 (0.13) vs 2025 (0.05) to balance lower radiometric performance in early Sentinel-2 data; the study utilizes only two snapshots rather than continuous change vector tracking.\n"
+                "3. **SWIR Soil Reflectance Noise** — While restricted to dry post-monsoon windows (Oct–Dec) to limit background interference, highly reflective bare saline soils can mimic built-up spectral signals.\n"
+                "4. **Exogenous Non-Spatial Variance** — The proximity models map physical geometry parameters but cannot explicitly capture external co-drivers like speculative land policy changes, real estate market fluctuations, or developer behavior."
+            )
 
 if __name__ == "__main__":
     print("🚀 Running native layout standalone structural check...")

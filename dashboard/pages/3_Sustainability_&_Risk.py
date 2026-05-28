@@ -176,12 +176,12 @@ def _get_growth_class(roi):
 # ──────────────────────────────────────────────────────────────────────
 
 ENV_STATS = [
-    {"label": "New Built-up Footprint",   "value": "34.013 km²", "type": "info"},
-    {"label": "Growth ∩ Biomass Loss",    "value": "28.203 km²", "type": "warning"},
-    {"label": "Conversion Share",         "value": "82.9%",      "type": "error"},
-    {"label": "Avg SAVI Loss / km²",     "value": "−0.1927",    "type": "warning"},
-    {"label": "In Moderate Flood Risk",  "value": "8.865 km²",  "type": "warning"},
-    {"label": "In High Flood Risk",      "value": "0.027 km²",  "type": "error"},
+    {"label": "New Built-up Footprint:\n",   "value": "34.013 km²", "type": "info"},
+    {"label": "Growth ∩ Biomass Loss:\n",    "value": "28.203 km²", "type": "warning"},
+    {"label": "Share of new growth at cost of local biomass:\n",         "value": "82.9%",      "type": "error"},
+    {"label": "Avg SAVI Loss / km²:\n",     "value": "-0.1927",    "type": "warning"},
+    {"label": "In Moderate Flood Risk:\n",  "value": "8.865 km²",  "type": "warning"},
+    {"label": "In High Flood Risk:\n",      "value": "0.027 km²",  "type": "error"},
 ]
 
 FVI_STATS = [
@@ -229,6 +229,24 @@ def Page():
             "or climatically vulnerable terrain sinks, and does corridor deployment introduce systematic spatial risk?"
         )
 
+        # ── Systemic Hypothesis Evaluation Framework ──
+        with solara.Card("Systemic Hypothesis Framework Summary"):
+            with solara.Column(style={"gap": "16px", "padding": "4px"}):
+                
+                # Hypothesis 1 Row
+                with solara.Row(justify="space-between", style={"align-items": "center", "border-bottom": "1px solid #e0e0e0", "padding-bottom": "8px"}):
+                    with solara.Column(style={"max-width": "80%"}):
+                        solara.Markdown("### **H1: Built-up expansion is associated with declining vegetation cover and increased surface heat susceptibility**")
+                        solara.Markdown("Evaluates whether physical corridor expansion systematically drives localized biomass conversion and elevates relative material thermal stress metrics.")
+                    solara.Success(label="SUPPORTED", children=["✓ Biomass Cost"])
+
+                # Hypothesis 2 Row
+                with solara.Row(justify="space-between", style={"align-items": "center"}):
+                    with solara.Column(style={"max-width": "80%"}):
+                        solara.Markdown("### **H2: A share of new built-up areas overlaps with environmentally sensitive or water-prone zones**")
+                        solara.Markdown("Tests for structural spatial misalignment by measuring how much new industrial infrastructure sits inside radar-verified seasonal flood pools and low-elevation basins.")
+                    solara.Success(label="SUPPORTED", children=["✓ Topographic Mismatch"])
+
         # ── Environmental Risk Cards Grid ──
         # Natively loops through your empirical stats using standard Solara state alerts
         with solara.GridFixed(columns=3):
@@ -241,7 +259,7 @@ def Page():
                     solara.Error(label=s["label"], children=[s["value"]])
 
         # ── Map 1: Biomass Transformation Card (UPDATED) ──
-        with solara.Card("Biomass Transformation Map — SAVI Loss Profile Within New Growth"):
+        with solara.Card("Biomass Transformation Map - SAVI Loss Profile Within New Growth"):
             solara.Markdown(
                 "**Legend Gradient:** Pale yellow (marginal biomass decay) → Deep red (severe removal) "
             )

@@ -156,11 +156,29 @@ def Page():
             "**Research Direction:** What proportion of Dholera's built-up footprint is actively generating economic activity, "
             "and how is structural utilization distributed across the corridor grid?"
         )
+        
+        # ── Systemic Hypothesis Evaluation Framework ──
+        with solara.Card("Systemic Hypothesis Framework Summary"):
+            with solara.Column(style={"gap": "16px", "padding": "4px"}):
+                
+                # Hypothesis 1 Row
+                with solara.Row(justify="space-between", style={"align-items": "center", "border-bottom": "1px solid #e0e0e0", "padding-bottom": "8px"}):
+                    with solara.Column(style={"max-width": "80%"}):
+                        solara.Markdown("### **H1: A significant share of built-up land shows no nighttime luminosity, indicating dormant or speculative occupation**")
+                        solara.Markdown("Tests if physical land conversion has outpaced active economic utilization across the paved infrastructure footprint.")
+                    solara.Success(label="SUPPORTED", children=["✓ Speculative Activation"])
+
+                # Hypothesis 2 Row
+                with solara.Row(justify="space-between", style={"align-items": "center"}):
+                    with solara.Column(style={"max-width": "80%"}):
+                        solara.Markdown("### **H2: Soil-disturbance signatures mark a transitional pipeline between raw land and operational use**")
+                        solara.Markdown("Verifies if spectral mapping can successfully track an intermediate, active earthworks pipeline before mature production.")
+                    solara.Success(label="SUPPORTED", children=["✓ Pipeline Verified"])
 
         # ── Macro Headline & Metrics Grid ──
         with solara.GridFixed(columns=4):
             # Master KPI callout container using Solara native header alerts
-            solara.Warning(
+            solara.Info(
                 label="\n", 
                 children=[f"\nIndustrial Utilisation Ratio: {IUR}% (of {TOTAL_KM2} km² footprint)"]
             )
@@ -231,6 +249,14 @@ def Page():
                     "This scale runs near perfectly parallel in mass magnitude to the existing active core footprint, "
                     "statistically validating an ongoing, rapid structural transformation across the corridor."
                 )
+        # ── Methodological System Limitations ──
+        with solara.Card("Methodological System Limitations"):
+            solara.Markdown(
+                "1. **Coarse Spatial Resolution Conflation** — The NOAA VIIRS nighttime lights dataset operates at a native resolution of ~500 m; this coarse footprint can conflate localized, dim industrial activity with surrounding dark background pixels in low-density zones.\n"
+                "2. **Luminosity Proxy Threshold Scope** — Nighttime radiance functions strictly as a relative proxy for active real estate capitalization and energy use; it does not serve as a direct measurement of physical industrial output, revenue generation, or localized employment density.\n"
+                "3. **Seasonal Soil Moisture Interference** — The spectral classification framework for tracking active earthworks relies heavily on a narrow SAVI disturbance boundary line (0.18–0.30); this threshold is highly sensitive to seasonal soil moisture anomalies and regional precipitation fluctuations.\n"
+                "4. **Static Threshold Calibration** — The structural baseline radiance floor is statically locked at 0.6 nW/cm²/sr to suppress background noise; while empirically calibrated to Dholera's near-zero baseline, it lacks dynamic sensitivity to fluctuating ephemeral or seasonal lighting signatures."
+            )
 
 
 # ──────────────────────────────────────────────────────────────────────
