@@ -260,8 +260,7 @@ This study moves beyond physical footprint mapping to interrogate the **economic
 | Hypothesis | Statement |
 |---|---|
 | H1 | A significant share of built-up land shows no nighttime luminosity, indicating dormant or speculative occupation |
-| H2 | Active industrial clusters concentrate around primary infrastructure anchors |
-| H3 | Soil-disturbance signatures mark a transitional pipeline between raw land and operational use |
+| H2 | Soil-disturbance signatures mark a transitional pipeline between raw land and operational use |
 
 ---
 
