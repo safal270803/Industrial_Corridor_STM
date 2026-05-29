@@ -1,6 +1,6 @@
 """
-Page 1 — RQ1: Infrastructure-Led Urbanization Patterns
-Data Science Implementation — Solara Standard Layout Framework
+Page 1 - RQ1: Infrastructure-Led Urbanization Patterns
+Data Science Implementation - Solara Standard Layout Framework
 """
 
 import os
@@ -145,8 +145,8 @@ def Page():
             "and does proximity to roads and key infrastructure nodes explain the spatial pattern of urbanization?"
         )
 
-        # ── Systemic Hypothesis Evaluation Framework ──
-        with solara.Card("Systemic Hypothesis Framework Summary"):
+        # ── Hypothesis Evaluation Framework ──
+        with solara.Card("Hypothesis Framework Summary"):
             with solara.Column(style={"gap": "16px", "padding": "4px"}):
                 
                 # Hypothesis 1 Row
@@ -228,8 +228,8 @@ def Page():
                 m_acc.add_basemap("CARTOBLACKBODY")
                 
                 # Add diagnostic sub-layers turned off by default
-                m_acc.addLayer(road_acc, {'min': 0, 'max': 1, 'palette': ['black', 'blue', 'cyan']}, 'DEBUG — Road Access Only', False)
-                m_acc.addLayer(infra_acc, {'min': 0, 'max': 1, 'palette': ['black', 'red', 'yellow']}, 'DEBUG — Infra Access Only', False)
+                m_acc.addLayer(road_acc, {'min': 0, 'max': 1, 'palette': ['black', 'blue', 'cyan']}, 'DEBUG - Road Access Only', False)
+                m_acc.addLayer(infra_acc, {'min': 0, 'max': 1, 'palette': ['black', 'red', 'yellow']}, 'DEBUG - Infra Access Only', False)
                 
                 # Final Fused Heatmap Layer
                 vis_params = {'min': 0, 'max': 0.75, 'palette': ['#000004', '#51127c', '#b63679', '#fb8861', '#fcfdbf']}
@@ -246,7 +246,7 @@ def Page():
                 solara.Error(f"Failed to generate Accessibility Surface layers: {str(e)}")
 
         # ── Statistical Regression Modeling Panel ──
-        with solara.Card("📉 Empirical Regression — 'Roads Ahead of Growth' Paradox"):
+        with solara.Card("📉 Empirical Regression - 'Roads Ahead of Growth' Paradox"):
             solara.Markdown(
                 "Linear Pearson $r = −0.028$ · Polynomial $R^2 = 0.0053$. Distance to transportation lines "
                 "explains less than 1% of total urban density variance. This statistically verifies that network frameworks "
@@ -283,10 +283,10 @@ def Page():
         # ── Methodological System Limitations ──
         with solara.Card("Methodological System Limitations"):
             solara.Markdown(
-                "1. **Threshold-Based Spectral Index Classification** — The pipeline relies strictly on static index threshold constraints (NDBI > 0.05/0.13, MNDWI < 0, SAVI < 0.18) without formal ground-truth confusion matrix validation.\n"
-                "2. **Radiometric Contrast and Temporal Constraints** — Stricter NDBI limits were required for 2016 (0.13) vs 2025 (0.05) to balance lower radiometric performance in early Sentinel-2 data; the study utilizes only two snapshots rather than continuous change vector tracking.\n"
-                "3. **SWIR Soil Reflectance Noise** — While restricted to dry post-monsoon windows (Oct–Dec) to limit background interference, highly reflective bare saline soils can mimic built-up spectral signals.\n"
-                "4. **Exogenous Non-Spatial Variance** — The proximity models map physical geometry parameters but cannot explicitly capture external co-drivers like speculative land policy changes, real estate market fluctuations, or developer behavior."
+                "1. **Threshold-Based Spectral Index Classification** - The pipeline relies strictly on static index threshold constraints (NDBI > 0.05/0.13, MNDWI < 0, SAVI < 0.18) without formal ground-truth confusion matrix validation.\n"
+                "2. **Radiometric Contrast and Temporal Constraints** - Stricter NDBI limits were required for 2016 (0.13) vs 2025 (0.05) to balance lower radiometric performance in early Sentinel-2 data; the study utilizes only two snapshots rather than continuous change vector tracking.\n"
+                "3. **SWIR Soil Reflectance Noise** - While restricted to dry post-monsoon windows (Oct–Dec) to limit background interference, highly reflective bare saline soils can mimic built-up spectral signals.\n"
+                "4. **Exogenous Non-Spatial Variance** - The proximity models map physical geometry parameters but cannot explicitly capture external co-drivers like speculative land policy changes, real estate market fluctuations, or developer behavior."
             )
 
 if __name__ == "__main__":

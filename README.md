@@ -569,7 +569,7 @@ The average SAVI decline per km² of new industrial footprint quantifies the bio
 
 ### 3. A Measurable Share of New Growth Occupies Flood-Vulnerable Terrain
 
-The FVI overlay on the new growth footprint confirms H2: a portion of Dholera's infrastructure investment has been placed inside terrain confirmed as flood-prone by SAR inundation evidence - terrain that is low-elevation and repeatedly inundated during monsoon. This is not incidental; it reflects the planned-corridor model of deploying infrastructure across the full taluka regardless of micro-terrain suitability.
+The FVI overlay on the new growth footprint confirms H2: a portion of Dholera's infrastructure investment has been placed inside terrain confirmed as flood-prone by SAR inundation evidence - terrain that is low-elevation and repeatedly inundated during monsoon.
 
 ### 4. The Dual Exposure Problem
 
@@ -579,11 +579,11 @@ Spatial co-occurrence of heat susceptibility and flood vulnerability - captured 
 
 ## Limitations
 
-- **SAVI delta monsoon confound** - Net vegetation signal in 2025 is elevated due to stronger monsoon rainfall; analysis is scoped to new growth footprint to mitigate this, but residual seasonal noise cannot be fully eliminated
-- **GLO-30 vertical accuracy** - ~4 m absolute vertical error over flat terrain; in an area where FVI thresholds are set at 5 m and 8 m, this introduces classification uncertainty in boundary pixels
-- **SAR thresholding** - The -17 dB water detection threshold is applied uniformly; smooth bare soil and salt pans can produce false water signatures even after permanent water exclusion
-- **Heat index is a spectral proxy** - Not a direct land surface temperature measurement; does not account for albedo variation, emissivity differences, or diurnal timing of Sentinel-2 acquisition
-- **Equal weighting in ENV exposure** - The 50/50 heat/flood composite is analytically expedient but not empirically calibrated; different weighting schemes would shift the spatial pattern of high-exposure zones
+- **SAVI delta monsoon issue** - 2025 baseline spectral parameters of SAVI are elevated due to higher regional precipitation anomalies; calculations are tightly isolated to the new growth footprint boundary to mitigate distorted signals.
+- **GLO-30 vertical accuracy** - ~4 m absolute vertical error over flat terrain; in an area where FVI thresholds are set at 5 m and 8 m, this introduces classification uncertainty in boundary pixels.
+- **SAR thresholding** - The -17 dB water detection threshold is applied uniformly; smooth bare soil and salt pans can produce false water signatures even after permanent water exclusion.
+- **Heat index is a spectral proxy** - Not a direct land surface temperature measurement; does not account for albedo variation, emissivity differences, or diurnal timing of Sentinel-2 acquisition.
+- **Equal weighting in ENV exposure** - The 50/50 heat/flood composite is analytically practical but not empirically calibrated; different weighting schemes would shift the spatial pattern of high-exposure zones.
 
 ---
 

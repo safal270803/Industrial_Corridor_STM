@@ -1,6 +1,6 @@
 """
-Page 3 — RQ3: Sustainability & Environmental Risk
-Data Science Implementation — Solara Standard Layout Framework
+Page 3 - RQ3: Sustainability & Environmental Risk
+Data Science Implementation - Solara Standard Layout Framework
 """
 
 import os
@@ -180,8 +180,8 @@ ENV_STATS = [
     {"label": "Growth ∩ Biomass Loss:\n",    "value": "28.203 km²", "type": "warning"},
     {"label": "Share of new growth at cost of local biomass:\n",         "value": "82.9%",      "type": "error"},
     {"label": "Avg SAVI Loss / km²:\n",     "value": "-0.1927",    "type": "warning"},
-    {"label": "In Moderate Flood Risk:\n",  "value": "8.865 km²",  "type": "warning"},
-    {"label": "In High Flood Risk:\n",      "value": "0.027 km²",  "type": "error"},
+    {"label": "New Growth in Moderate Flood Risk:\n",  "value": "8.865 km²",  "type": "warning"},
+    {"label": "New Growth in High Flood Risk:\n",      "value": "0.027 km²",  "type": "error"},
 ]
 
 FVI_STATS = [
@@ -225,12 +225,12 @@ def Page():
         # ── Academic Header Block ──
         solara.Markdown("# RQ3: Sustainability & Environmental Risk Realignment")
         solara.Markdown(
-            "**Research Direction:** Does the physical footprint of Dholera's built-up expansion overlap with environmentally critical "
-            "or climatically vulnerable terrain sinks, and does corridor deployment introduce systematic spatial risk?"
+            "**Research Direction:** Does the spatial footprint of Dholera's built-up expansion overlap with environmentally sensitive or climatically vulnerable terrain, "
+            "and does corridor development carry a quantifiable ecological cost? "
         )
 
-        # ── Systemic Hypothesis Evaluation Framework ──
-        with solara.Card("Systemic Hypothesis Framework Summary"):
+        # ── Hypothesis Evaluation Framework ──
+        with solara.Card("Hypothesis Framework Summary"):
             with solara.Column(style={"gap": "16px", "padding": "4px"}):
                 
                 # Hypothesis 1 Row
@@ -261,7 +261,7 @@ def Page():
         # ── Map 1: Biomass Transformation Card (UPDATED) ──
         with solara.Card("Biomass Transformation Map - SAVI Loss Profile Within New Growth"):
             solara.Markdown(
-                "**Legend Gradient:** Pale yellow (marginal biomass decay) → Deep red (severe removal) "
+                "**Legend Gradient:** 🌼 Pale yellow (marginal biomass decay) → 🔴 Deep red (severe removal) "
             )
             try:
                 roi = _get_roi()
@@ -313,7 +313,7 @@ def Page():
         # ── Map 2: Heat Susceptibility Card ──
         with solara.Card("Heat Susceptibility Index Proxy (NDBI_norm − SAVI_norm)"):
             solara.Markdown(
-                "**Legend Gradient:** Cool blue (thermal resilience framing) → Fiery red (exposed urban heat retention cores)"
+                "**Legend Gradient:** 💧 Cool blue (thermal resilience framing) → 🔥 Fiery red (exposed urban heat retention cores)"
             )
             try:
                 heat = _heat_index(s2_2025)
@@ -356,10 +356,10 @@ def Page():
             with solara.Card("FVI Spatial Distribution Profile"):
                 solara.FigurePlotly(_fvi_chart())
                 solara.Markdown(
-                    "**Headline Realignment Metric:** Crucially, **26.1%** of all new built-up footprint "
-                    "additions (8.865 km²) sit inside low-elevation terrain sinks characterized by recurring "
-                    "post-monsoon radar surface pooling, validating a distinct systemic engineering mismatch."
+                    "**Headline Realignment Metric:** Crucially, **26.1%** of all new built-up growth footprint "
+                    "sits inside moderate or high flood risk areas.(8.865 km²) "
                 )
+
 
         # ── Map 4: Environmental Exposure Composite Card ──
         with solara.Card("Composite Environmental Exposure Surface Matrix (Equal Weighted Heat + Flood)"):
@@ -387,11 +387,11 @@ def Page():
                 solara.Markdown(
                     "• **82.9% of total new built-up growth has expanded directly over active regional biomass matrices:** "
                     "Every square kilometer of newly paved ground registers an average SAVI depletion signature of −0.1927, "
-                    "framing the systematic ecological friction of infrastructure footprint expansion."
+                    "framing the ecological cost of infrastructure footprint expansion."
                 )
                 solara.Markdown(
                     "• **Zoning frameworks demonstrate an engineering disconnect from local micro-topography:** "
-                    "A notable 26.1% share of new industrial additions occupies low-lying flood-prone terrain verified "
+                    "A notable 26.1% of all new built-up growth footprint sits inside moderate or high flood risk areas.(8.865 km²) verified "
                     "directly by seasonal Sentinel-1 radar backscatter reflection metrics."
                 )
                 solara.Markdown(
@@ -403,10 +403,10 @@ def Page():
         # ── Methodological System Limitations ──
         with solara.Card("Methodological System Limitations"):
             solara.Markdown(
-                "1. **SAVI Delta Monsoon Confound** — 2025 baseline spectral parameters are elevated due to higher regional precipitation anomalies; calculations are tightly isolated to the new growth footprint boundary to mitigate skewed signals.\n"
-                "2. **Copernicus GLO-30 Vertical Thresholds** — Vertical accuracy constraints (~4m) mean absolute FVI class boundary pixel cuts are sensitive to pixel edge blending artifacts.\n"
-                "3. **Specular Backscatter Threshold Constraints** — Smooth, dry alluvial bare soils or dried coastal salt pans can occasionally mimic specular surface water returns below the uniform −17 dB threshold.\n"
-                "4. **Thermal Susceptibility Proxy Scope** — The derived heat index functions strictly as a relative spectral materials balance framework, not a direct kinetic Land Surface Temperature (LST) measurement."
+                "1. **SAVI Delta Monsoon Issue** - 2025 baseline spectral parameters of SAVI are elevated due to higher regional precipitation anomalies; calculations are tightly isolated to the new growth footprint boundary to mitigate distorted signals.\n"
+                "2. **Copernicus GLO-30 Vertical Thresholds** - ~4 m absolute vertical error over flat terrain; in an area where FVI thresholds are set at 5 m and 8 m, this introduces classification uncertainty in boundary pixels.\n"
+                "3. **SAR Backscatter Threshold Constraints** - The -17 dB water detection threshold is applied uniformly; smooth bare soil and salt pans can produce false water signatures even after permanent water exclusion.\n"
+                "4. **Thermal Susceptibility Proxy Used** - Not a direct kinetic Land Surface Temperature (LST) measurement."
             )
 
 

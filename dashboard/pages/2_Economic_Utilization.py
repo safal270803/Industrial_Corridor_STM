@@ -1,6 +1,6 @@
 """
-Page 2 — RQ2: Economic Utilization & Cluster Typology
-Data Science Implementation — Solara Standard Layout Framework
+Page 2 - RQ2: Economic Utilization & Cluster Typology
+Data Science Implementation - Solara Standard Layout Framework
 """
 
 import os
@@ -153,12 +153,12 @@ def Page():
         # ── Academic Header Block ──
         solara.Markdown("# RQ2: Economic Utilization & Cluster Typology")
         solara.Markdown(
-            "**Research Direction:** What proportion of Dholera's built-up footprint is actively generating economic activity, "
-            "and how is structural utilization distributed across the corridor grid?"
+            "**Research Direction:** What proportion of Dholera's built-up footprint is economically active,"
+            " and how is industrial utilisation spatially distributed across the corridor?"
         )
         
-        # ── Systemic Hypothesis Evaluation Framework ──
-        with solara.Card("Systemic Hypothesis Framework Summary"):
+        # ── Hypothesis Evaluation Framework ──
+        with solara.Card("Hypothesis Framework Summary"):
             with solara.Column(style={"gap": "16px", "padding": "4px"}):
                 
                 # Hypothesis 1 Row
@@ -235,14 +235,19 @@ def Page():
         with solara.Card("Core Urban Geography Empirical Analysis"):
             with solara.Column(style={"gap": "14px"}):
                 solara.Markdown(
-                    "• **Physical infrastructure infrastructure has significantly outpaced localized capitalization:** "
+                    "• **Physical infrastructure has significantly outpaced localized capitalization:** "
                     "An Industrial Utilisation Ratio (IUR) baseline signature of 35.2% indicates that nearly two-thirds "
                     "of the structurally paved grid generates zero active nighttime radiant output."
                 )
                 solara.Markdown(
                     "• **The 31.1% Speculative/Dormant metric highlights an intentional institutional planning vector:** "
-                    "Subdivided transportation and transit grids are deployed far ahead of factory asset allocation "
-                    "to firmly cement market-ready spatial value across the regional matrix."
+                    "Roads in Dholera are not constructed to serve existing factories; they are deployed to **activate land value for future investors.**"
+                )
+                solara.Markdown(
+                    "• **The Ghost Grid Phenomenon:** "
+                    "The spatial concentration of dark (low night light) plots, particularly around infrastructure anchors such as the Airport Hub "
+                    "and the concentration of paved plots around Solar Plant shows empirical evidence of **Land Expectation Behavior:** "
+                    "parcels prepared and held in anticipation of economic activation rather than immediate use. "
                 )
                 solara.Markdown(
                     "• **The 33.7% Under-Construction index tracks an active development pipeline:** "
@@ -252,10 +257,10 @@ def Page():
         # ── Methodological System Limitations ──
         with solara.Card("Methodological System Limitations"):
             solara.Markdown(
-                "1. **Coarse Spatial Resolution Conflation** — The NOAA VIIRS nighttime lights dataset operates at a native resolution of ~500 m; this coarse footprint can conflate localized, dim industrial activity with surrounding dark background pixels in low-density zones.\n"
-                "2. **Luminosity Proxy Threshold Scope** — Nighttime radiance functions strictly as a relative proxy for active real estate capitalization and energy use; it does not serve as a direct measurement of physical industrial output, revenue generation, or localized employment density.\n"
-                "3. **Seasonal Soil Moisture Interference** — The spectral classification framework for tracking active earthworks relies heavily on a narrow SAVI disturbance boundary line (0.18–0.30); this threshold is highly sensitive to seasonal soil moisture anomalies and regional precipitation fluctuations.\n"
-                "4. **Static Threshold Calibration** — The structural baseline radiance floor is statically locked at 0.6 nW/cm²/sr to suppress background noise; while empirically calibrated to Dholera's near-zero baseline, it lacks dynamic sensitivity to fluctuating ephemeral or seasonal lighting signatures."
+                "1. **Coarse Spatial Resolution Conflation** - The NOAA VIIRS nighttime lights dataset operates at a native resolution of ~500 m; this coarse footprint can conflate localized, dim industrial activity with surrounding dark background pixels in low-density zones.\n"
+                "2. **Luminosity Proxy Threshold Scope** - Nighttime radiance functions strictly as a relative proxy for active real estate capitalization and energy use; it does not serve as a direct measurement of physical industrial output, revenue generation, or localized employment density.\n"
+                "3. **Seasonal Soil Moisture Interference** - The spectral classification framework for tracking active earthworks relies heavily on a narrow SAVI disturbance boundary line (0.18–0.30); this threshold is highly sensitive to seasonal soil moisture anomalies and regional precipitation fluctuations.\n"
+                "4. **Static Threshold Calibration** - The structural baseline radiance floor is statically locked at 0.6 nW/cm²/sr to suppress background noise; while empirically calibrated to Dholera's near-zero baseline, but this threshold is too low to capture the real economic output, compared to megacities like New Delhi, Mumbai etc."
             )
 
 
