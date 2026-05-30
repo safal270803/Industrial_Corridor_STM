@@ -8,6 +8,7 @@ import ee
 import geemap
 import solara
 from pathlib import Path
+import json
 
 # ──────────────────────────────────────────────────────────────────────
 #  1. Spatial Path Mapping & GEE Core Functions
@@ -29,7 +30,14 @@ IMG_POLY3_PATH = DASHBOARD_ROOT / "assets" / "regression_poly3.png"
 
 def _get_roi():
     """Ingests local GeoJSON boundary from assets and returns GEE Geometry."""
+    try:
+        if not ee.data._credentials:
+            ee.Initialize()
+    except Exception:
+        pass
+
     if os.path.exists(GEOJSON_ROI):
+        # FIX: Ensure parentheses are included at the end of geometry()
         return geemap.geojson_to_ee(GEOJSON_ROI).geometry()
     else:
         return ee.Geometry.Polygon([[

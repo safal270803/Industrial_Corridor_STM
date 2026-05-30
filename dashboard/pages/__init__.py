@@ -10,25 +10,40 @@ import ee
 
 title = "INFRASTRUCTURE-LED URBANIZATION" 
 
-def _init_gee():
-    """Initializes Google Earth Engine securely via Service Account secrets or local fallback."""
-    try:
-        sa_key_json = os.environ.get("EE_SERVICE_ACCOUNT_KEY", "")
-        if sa_key_json:
-            key_dict = json.loads(sa_key_json)
-            credentials = ee.ServiceAccountCredentials(
-                client_email=key_dict["client_email"], 
-                key_data=json.dumps(key_dict)
-            )
-            ee.Initialize(credentials=credentials)
-            print("✅ GEE Initialized successfully via Service Account.")
-        else:
-            ee.Initialize()
-            print("✅ GEE Initialized successfully via local credentials.")
-    except Exception as e:
-        print(f"⚠️ GEE System Initialization Failure: {e}")
+from google.oauth2 import service_account
 
-_init_gee()
+def _init_gee_globally():
+    print("🚀 TARGET ACQUIRED: Launching Earth Engine Handshake inside pages/__init__.py...")
+    sa_key_json = os.environ.get("EE_SERVICE_ACCOUNT_KEY", "")
+    
+    if not sa_key_json:
+        print("❌ CRITICAL ERROR: EE_SERVICE_ACCOUNT_KEY environment secret is empty!")
+        return
+
+    try:
+        # Load the key dictionary safely
+        key_dict = json.loads(sa_key_json)
+        
+        # Explicitly declare Google cloud authorization scopes
+        scopes = [
+            'https://www.googleapis.com/auth/earthengine', 
+            'https://www.googleapis.com/auth/cloud-platform'
+        ]
+        
+        # Authenticate using standard Google infrastructure tools
+        credentials = service_account.Credentials.from_service_account_info(key_dict, scopes=scopes)
+        ee.Initialize(credentials=credentials)
+        print("✅ SUCCESS: Google Earth Engine authenticated globally for all dashboard tabs!")
+    except Exception as e:
+        print(f"❌ HANDSHAKE EXCEPTION: Initialization aborted due to: {str(e)}")
+
+# Force the handshake execution immediately when Solara registers the multi-page folder
+_init_gee_globally()
+
+# Create a master layout wrapper so Solara binds the multi-page menu tabs perfectly
+@solara.component
+def Layout(children):
+    return solara.AppLayout(children=children)
 
 
 @solara.component

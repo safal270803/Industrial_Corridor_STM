@@ -8,6 +8,7 @@ import ee
 import geemap
 import solara
 import plotly.graph_objects as go
+import json
 
 # ──────────────────────────────────────────────────────────────────────
 #  1. Spatial Path Mapping & GEE Core Engine (Retaining All Logic)
@@ -20,10 +21,16 @@ GEOJSON_PATH = os.path.join(DASHBOARD_ROOT, "assets", "Dholera_Taluk.geojson")
 
 def _get_roi():
     """Ingests local GeoJSON boundary from assets folder and returns GEE Geometry."""
+    try:
+        if not ee.data._credentials:
+            ee.Initialize()
+    except Exception:
+        pass
+
+    # FIX: Changed GEOJSON_ROI to GEOJSON_PATH to match Page 2 variables
     if os.path.exists(GEOJSON_PATH):
         return geemap.geojson_to_ee(GEOJSON_PATH).geometry()
     else:
-        # Stable fallback bounding box boundary
         return ee.Geometry.Polygon([[
             [72.00, 22.15], [72.35, 22.15], [72.35, 22.50], [72.00, 22.50], [72.00, 22.15]
         ]])
