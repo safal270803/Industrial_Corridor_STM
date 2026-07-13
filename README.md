@@ -2,6 +2,8 @@
 ### RQ1 : Built-up Growth & Infrastructure Accessibility: Dholera (2016–2025)
 
 ---
+![main](output/screenshot/MainIMG.png)
+---
 
 ## Overview
 
